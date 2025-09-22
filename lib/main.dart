@@ -5,6 +5,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:vitalia_app/screens/home/welcome_screens.dart';
 import 'firebase_options.dart';
 import 'package:vitalia_app/providers/patient_provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
 void main()  async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -31,6 +33,15 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         ),
         home: WelcomeScreens(),
+        // ✅ Localisations pour afficher le calendrier en français
+        localizationsDelegates: const [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [
+          Locale('fr', 'FR'), // Français
+        ],
       ),
     );
   }

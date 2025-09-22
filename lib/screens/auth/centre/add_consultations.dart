@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:vitalia_app/modeles/consultation_model.dart';
 import 'package:vitalia_app/services/firestore_service.dart';
 
@@ -198,3 +198,4 @@ class _CentreAddConsultationPageState extends State<CentreAddConsultationPage> {
     );
   }
 }
+*/

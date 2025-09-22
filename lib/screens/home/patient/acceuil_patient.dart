@@ -5,6 +5,7 @@ import 'package:vitalia_app/providers/patient_provider.dart';
 import 'package:vitalia_app/screens/home/patient/dossier_patient.dart';
 import 'package:vitalia_app/screens/home/patient/profil_patient.dart';
 import 'package:vitalia_app/screens/home/patient/rendezvous.dart';
+import 'package:vitalia_app/screens/home/patient/tous_les_centres.dart';
 
 import 'Patient_home.dart';
 
@@ -209,7 +210,13 @@ class AcceuilPatient extends StatelessWidget {
                 iconColor: Colors.purple,
                 containerColor: const Color(0xA6E9DDFB),
                 cardColor: const Color(0xFFF5F5F5),
-                onTap: () {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>   CentresDeSantePage()),
+                  );
+                },
               ),
               _buildFeatureCard(
                 icon: Icons.person_outline_rounded,
@@ -232,7 +239,7 @@ class AcceuilPatient extends StatelessWidget {
 
           const SizedBox(height: 15),
 
-          // 📌 Activité récente
+          //  Activité récente
           const Text(
             "Activité récente",
             style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),

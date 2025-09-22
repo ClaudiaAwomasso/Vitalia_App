@@ -74,6 +74,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Container(
+        height: 120,
         color: Colors.white,
         padding: const EdgeInsets.all(16),
         child: Row(
@@ -81,7 +82,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
             const CircleAvatar(
               backgroundColor: Color(0xB0D2E6FD),
               radius: 30,
-              child: Icon(Icons.person, size: 30, color: Colors.blue,),
+              child: Icon(Icons.person_outline, size: 30, color: Colors.blue,),
             ),
             const SizedBox(width: 16),
             Column(
@@ -277,6 +278,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
       itemBuilder: (context, index) {
         final o = ordonnances[index];
         return Card(
+          color: Colors.white,
           margin: const EdgeInsets.only(bottom: 16),
           shape:
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -294,7 +296,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
                         style: const TextStyle(fontWeight: FontWeight.bold)),
                     Text("Date : ${o["date"]}",
                         style:
-                        const TextStyle(color: Colors.grey, fontSize: 12)),
+                        const TextStyle(color: Colors.blue, fontSize: 12)),
                   ],
                 ),
                 const SizedBox(height: 8),

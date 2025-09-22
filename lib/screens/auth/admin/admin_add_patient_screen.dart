@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+/*import 'package:flutter/material.dart';
 import 'package:vitalia_app/utils/id_generator.dart';
 import 'package:vitalia_app/services/firestore_service.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
@@ -111,4 +111,4 @@ class _AdminAddPatientScreenState extends State<AdminAddPatientScreen> {
       ),
     );
   }
-}
+}*/

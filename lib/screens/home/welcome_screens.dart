@@ -4,8 +4,8 @@ import 'package:vitalia_app/screens/auth/admin/admin_add_patient_screen.dart';
 import 'package:vitalia_app/screens/auth/patient/patient_login.dart';
 
 import '../auth/centre/add_consultations.dart';
-
-
+import 'admin/admin_home.dart';
+import 'centre/centre_home.dart';
 class WelcomeScreens extends StatelessWidget {
   const WelcomeScreens({super.key});
 
@@ -20,11 +20,9 @@ class WelcomeScreens extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-
             Center(child: Image(image: AssetImage("assets/images/logotransparent.png"), width: 200, )),
             Padding(
               padding: const EdgeInsets.all(8.0),
-        
               child: SizedBox(
                   height: 20,
                   child: Text('Votre plateforme médicale connectée ',) ),
@@ -32,8 +30,7 @@ class WelcomeScreens extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(15),
               child: ClipRRect(
-                  borderRadius: BorderRadius.circular(20
-                  ),
+                  borderRadius: BorderRadius.circular(20),
                   child: Image(image: AssetImage("assets/images/medecin.jpg"),)),
             ),
             Text('Choisissez votre profil', style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
@@ -66,7 +63,6 @@ class WelcomeScreens extends StatelessWidget {
                   onTap: (){
                     Navigator.push(context, MaterialPageRoute(builder: (context)=>PatientLogin()));
                   },
-
                 ),
               ),
             ),
@@ -92,14 +88,12 @@ class WelcomeScreens extends StatelessWidget {
                         color: Color(0xFFC7E3CC),
                         borderRadius: BorderRadius.circular(15)
                     ),
-
                     child: Icon(Icons.medical_services, color: Colors.green,),),
                   title:Text('Centre de santé', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                   subtitle: Text("Gérez vos patients et consultations directement depuis l’interface médecin. ",  ),
                   trailing: Icon(Icons.arrow_forward_outlined),
                     onTap: (){
-
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CentreAddConsultationPage(patientId: '',)));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CentreHome()));
                     },
                 ),
               ),
@@ -126,7 +120,6 @@ class WelcomeScreens extends StatelessWidget {
                         color:Color(0xA6E9DDFB),
                         borderRadius: BorderRadius.circular(15)
                     ),
-
                     child: Icon(Icons.lock_person_outlined, color: Colors.deepPurple,),),
                   title:Text('Administration', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                   subtitle: Text(
@@ -134,13 +127,12 @@ class WelcomeScreens extends StatelessWidget {
                       "Gérez le système, les centres de santé et les utilisateurs facilement." ),
                   trailing: Icon(Icons.arrow_forward_outlined),
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminAddPatientScreen()));
+                 //   Navigator.push(context, MaterialPageRoute(builder: (context)=>AdminAddPatientScreen()));
+                    Navigator.push(context, MaterialPageRoute(builder: (context)=> HomeCentre()));
                   },
-
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -148,3 +140,4 @@ class WelcomeScreens extends StatelessWidget {
 
   }
 }
+

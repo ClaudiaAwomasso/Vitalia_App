@@ -1,4 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+/*import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
 import 'package:vitalia_app/modeles/consultation_model.dart';
@@ -414,3 +414,38 @@ class FirestoreService {
     }
   }
 }*/
+ */
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:vitalia_app/modeles/patient_model.dart';
+
+class FirestoreService {
+  final FirebaseFirestore _db = FirebaseFirestore.instance;
+  final String collectionPatients = 'patients';
+
+  // Ajouter un patient
+  Future<void> addPatient(PatientModel patient) async {
+    await _db.collection(collectionPatients).doc(patient.idVitalia).set(patient.toMap());
+  }
+
+  // Obtenir patient par téléphone et ID
+  Future<PatientModel?> getPatientByPhoneAndID(String phone, String idVitalia) async {
+    final doc = await _db.collection(collectionPatients).doc(idVitalia).get();
+    if (doc.exists) {
+      final data = doc.data()!;
+      if (data['telephone'] == phone) {
+        return PatientModel.fromMap(data, doc.id);
+      }
+    }
+    return null;
+  }
+
+  // Mettre à jour patient complet
+  Future<void> updatePatient(String idVitalia, PatientModel updatedPatient) async {
+    await _db.collection(collectionPatients).doc(idVitalia).update(updatedPatient.toMap());
+  }
+
+  // Mettre à jour uniquement la photo
+  Future<void> updatePatientPhoto(String idVitalia, String photoUrl) async {
+    await _db.collection(collectionPatients).doc(idVitalia).update({'photoUrl': photoUrl});
+  }
+}

@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
 import 'package:vitalia_app/services/firestore_service.dart';
-
+/*
 class PatientProvider extends ChangeNotifier {
   PatientModel? _patient; // patient connecté
   final FirestoreService _firestore = FirestoreService();
@@ -95,4 +95,86 @@ class PatientProvider extends ChangeNotifier {
       notifyListeners();
     }
   }*/
+}
+*/
+
+class PatientProvider extends ChangeNotifier {
+  PatientModel? _patient; // patient connecté
+  final FirestoreService _firestore = FirestoreService();
+
+  PatientModel? get patient => _patient;
+
+  // Méthode pour ajouter un patient
+  Future<void> addPatient(PatientModel patient) async {
+    await _firestore.addPatient(patient);
+    // Optionnel : tu peux mettre à jour une liste locale de patients ici si nécessaire
+    notifyListeners();
+  }
+
+  // Connexion patient
+  Future<bool> login(String phone, String idVitalia) async {
+    final result = await _firestore.getPatientByPhoneAndID(phone, idVitalia);
+    if (result != null) {
+      _patient = result;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  // Déconnexion
+  void logout() {
+    _patient = null;
+    notifyListeners();
+  }
+
+  // Mettre à jour le profil complet
+  Future<void> updatePatient(PatientModel updatedPatient) async {
+    if (_patient != null) {
+      await _firestore.updatePatient(_patient!.idVitalia, updatedPatient);
+      _patient = updatedPatient;
+      notifyListeners();
+    }
+  }
+
+  // Mettre à jour uniquement la photo de profil
+  Future<void> updatePatientPhoto() async {
+    if (_patient == null) return;
+
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    File file = File(image.path);
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("patients_photos/${_patient!.idVitalia}.jpg");
+    await ref.putFile(file);
+    String downloadUrl = await ref.getDownloadURL();
+
+    await _firestore.updatePatientPhoto(_patient!.idVitalia, downloadUrl);
+
+    _patient = PatientModel(
+      id: _patient!.id,
+      idVitalia: _patient!.idVitalia,
+      nom: _patient!.nom,
+      prenom: _patient!.prenom,
+      telephone: _patient!.telephone,
+      dateNaissance: _patient!.dateNaissance,
+      sexe: _patient!.sexe,
+      age: _patient!.age,
+      photoUrl: downloadUrl,
+      email: _patient!.email,
+      adresse: _patient!.adresse,
+      contactNom: _patient!.contactNom,
+      contactRelation: _patient!.contactRelation,
+      contactTelephone: _patient!.contactTelephone,
+      contactEmail: _patient!.contactEmail,
+      antecedentsMedicaux: _patient!.antecedentsMedicaux,
+      allergies: _patient!.allergies,
+      traitementsEnCours: _patient!.traitementsEnCours,
+    );
+
+    notifyListeners();
+  }
 }

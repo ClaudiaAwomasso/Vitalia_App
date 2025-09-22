@@ -1,683 +1,408 @@
-/*import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:vitalia_app/providers/patient_provider.dart';
-import 'package:vitalia_app/screens/home/patient/dossier_patient.dart';
-import 'package:vitalia_app/screens/home/patient/profil_patient.dart';
-import 'package:vitalia_app/screens/home/patient/rendezvous.dart';
-
-
-class PatientHomeSreen extends StatefulWidget {
-  const PatientHomeSreen({super.key});
-
-  @override
-  State<PatientHomeSreen> createState() => _PatientHomeSreenState();
-}
-
-class _PatientHomeSreenState extends State<PatientHomeSreen> {
-  int _selectedIndex = 0;
-// Les page
-  final List<Widget> _pages = [
-    DossierPatient(),
-    ProfilPatient(),
-    Rendezvous(),
-  ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
-  @override
-  Widget build(BuildContext context) {
-    // ✅ On récupère le patient depuis le provider
-    final patientProvider = Provider.of<PatientProvider>(context);
-    final patient = patientProvider.patient; // PatientModel ?
-
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Vitalia",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
-          ),
-        ),
-        foregroundColor: Colors.black,
-        elevation: 1,
-        actions: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: const Color(0xB0D2E6FD),
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none, color: Colors.blue),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.grey[300],
-              ),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person_outline),
-              ),
-            ),
-          ),
-        ],
-      ),
-      body: ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  // ✅ Si patient existe → affiche son nom
-                  "Bonjour, ${patient?.nom ?? 'Utilisateur'}",
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Votre dossier médical personnel",
-                  style: TextStyle(color: Colors.grey[700], fontSize: 16),
-                ),
-                const SizedBox(height: 16),
-
-                // ---- Ici tu peux ensuite connecter le reste (consultations, rdv, etc.)
-                // Pour l'instant je garde tes widgets fixes comme exemple
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  color: Colors.blue[600],
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "État de santé",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Dernière mise à jour: 12/01/2024",
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 14),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Column(
-                                  children: const [
-                                    Text("3",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20)),
-                                    Text("Traitements actifs",
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 14)),
-                                  ],
-                                ),
-                                const SizedBox(width: 24),
-                                Column(
-                                  children: const [
-                                    Text("2",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20)),
-                                    Text("RDV à venir",
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 14)),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            borderRadius: BorderRadius.circular(30),
-                          ),
-                          child: const Icon(FontAwesomeIcons.heartPulse,
-                              color: Colors.white, size: 27),
-                        )
-                      ],
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 16),
-
-                // Grid de fonctionnalités
-                GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1,
-                  children: [
-                    _buildFeatureCard(
-                      icon: Icons.folder_open,
-                      title: "Mon dossier",
-                      subtitle: "Historique & traitement",
-                      textColor: Colors.black,
-                      iconColor: Colors.blue,
-                      containerColor: const Color(0xB0D2E6FD),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {},
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.calendar_month_outlined,
-                      title: "Rendez-vous",
-                      subtitle: "Planifier & consulter",
-                      textColor: Colors.black,
-                      iconColor: Colors.green,
-                      containerColor: const Color(0xFFC7E3CC),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {},
-                    ),
-                    _buildFeatureCard(
-                      icon: FontAwesomeIcons.hospitalSymbol,
-                      title: "Centres de santé",
-                      subtitle: "Trouver un centre",
-                      textColor: Colors.black,
-                      iconColor: Colors.purple,
-                      containerColor: const Color(0xA6E9DDFB),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {},
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.person_outline_rounded,
-                      title: "Mon profil",
-                      subtitle: "Informations personnelles",
-                      textColor: Colors.black,
-                      iconColor: Colors.orange,
-                      containerColor: const Color(0xFFFAE4B6),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {},
-                    ),
-                  ],
-                ),
-
-                const SizedBox(height: 15),
-                const Text(
-                  "Activité récente",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                ),
-                const ListTile(
-                  leading: Icon(FontAwesomeIcons.stethoscope,
-                      size: 20, color: Colors.blue),
-                  title: Text("Consultation générale",
-                      style: TextStyle(fontSize: 16)),
-                  subtitle: Text("Dr. Martin - Centre Saint-Louis",
-                      style: TextStyle(fontSize: 12)),
-                  trailing: Text("12/01/2024"),
-                ),
-                const ListTile(
-                  leading: Icon(FontAwesomeIcons.prescriptionBottleMedical,
-                      size: 20, color: Colors.green),
-                  title: Text("Nouvelle ordonnance",
-                      style: TextStyle(fontSize: 16)),
-                  subtitle: Text("Paracétamol 1000mg",
-                      style: TextStyle(fontSize: 12)),
-                  trailing: Text("13/01/2024"),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFeatureCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color textColor,
-    required Color iconColor,
-    required Color containerColor,
-    required Color cardColor,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      color: cardColor,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: containerColor,
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Icon(icon, color: iconColor, size: 25),
-              ),
-              const SizedBox(height: 10),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
-                ),
-              ),
-              const SizedBox(height: 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: textColor.withOpacity(0.7),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}*/
-
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:provider/provider.dart';
-import 'package:vitalia_app/providers/patient_provider.dart';
-import 'package:vitalia_app/screens/home/patient/dossier_patient.dart';
-import 'package:vitalia_app/screens/home/patient/profil_patient.dart';
-import 'package:vitalia_app/screens/home/patient/rendezvous.dart';
 
-class PatientHomeSreen extends StatefulWidget {
-  const PatientHomeSreen({super.key});
+import '../admin/dashboard_page.dart' show AdminDashboardPage;
+
+class NouveauDossierPatientPage extends StatefulWidget {
+  const NouveauDossierPatientPage({super.key});
 
   @override
-  State<PatientHomeSreen> createState() => _PatientHomeSreenState();
+  State<NouveauDossierPatientPage> createState() =>
+      _NouveauDossierPatientPageState();
 }
 
-class _PatientHomeSreenState extends State<PatientHomeSreen> {
-  int _selectedIndex = 0;
+class _NouveauDossierPatientPageState extends State<NouveauDossierPatientPage> {
+  int currentStep = 1;
+  String? selectedSexe;
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+  // 🔹 Controllers étape 1
+  final TextEditingController nomController = TextEditingController();
+  final TextEditingController prenomController = TextEditingController();
+  final TextEditingController dateNaissanceController = TextEditingController();
+  final TextEditingController telephoneController = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController adresseController = TextEditingController();
+
+  // 🔹 Controllers étape 2
+  final TextEditingController contactNomController = TextEditingController();
+  final TextEditingController contactRelationController = TextEditingController();
+  final TextEditingController contactTelephoneController = TextEditingController();
+  final TextEditingController contactEmailController = TextEditingController();
+
+  // 🔹 Controllers étape 3
+  final TextEditingController antecedentController = TextEditingController();
+  final TextEditingController allergiesController = TextEditingController();
+  final TextEditingController traitementsController = TextEditingController();
+
+  void nextStep() {
+    if (_validateCurrentStep()) {
+      if (currentStep < 3) {
+        setState(() {
+          currentStep++;
+        });
+      }
+    }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final patientProvider = Provider.of<PatientProvider>(context);
-    final patient = patientProvider.patient;
+  void previousStep() {
+    if (currentStep > 1) {
+      setState(() {
+        currentStep--;
+      });
+    }
+  }
 
-    // Pages du BottomNavigationBar
-    final List<Widget> _pages = [
-      // Premier onglet → ton ListView actuel (Accueil)
-      ListView(
-        children: [
-          Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Bonjour, ${patient?.nom ?? 'Utilisateur'}",
-                  style: const TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "Votre dossier médical personnel",
-                  style: TextStyle(color: Colors.grey[700], fontSize: 16),
-                ),
-                const SizedBox(height: 16),
-                // Carte état de santé
-                Card(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  color: Colors.blue[600],
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  bool _validateCurrentStep() {
+    switch (currentStep) {
+      case 1:
+        if (nomController.text.isEmpty ||
+            prenomController.text.isEmpty ||
+            dateNaissanceController.text.isEmpty ||
+            selectedSexe == null ||
+            telephoneController.text.isEmpty ||
+            emailController.text.isEmpty ||
+            adresseController.text.isEmpty) {
+          _showError("Veuillez remplir tous les champs de l'étape 1.");
+          return false;
+        }
+        break;
+      case 2:
+        if (contactNomController.text.isEmpty ||
+            contactRelationController.text.isEmpty ||
+            contactTelephoneController.text.isEmpty ||
+            contactEmailController.text.isEmpty) {
+          _showError("Veuillez remplir tous les champs de l'étape 2.");
+          return false;
+        }
+        break;
+      case 3:
+        if (antecedentController.text.isEmpty ||
+            allergiesController.text.isEmpty ||
+            traitementsController.text.isEmpty) {
+          _showError("Veuillez remplir tous les champs de l'étape 3.");
+          return false;
+        }
+        break;
+    }
+    return true;
+  }
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(message), backgroundColor: Colors.red),
+    );
+  }
+
+  void finish() {
+    if (_validateCurrentStep()) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Dossier terminé ✅")),
+      );
+      // 🔹 Ici tu peux envoyer les données vers un backend ou base de données
+      // 🔹 Redirection vers la page d'accueil après un petit délai pour voir le SnackBar
+      Future.delayed(const Duration(seconds: 1), () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const AdminDashboardPage()), // <-- remplace HomePage par ta page d'accueil
+        );
+      });
+    }
+  }
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: DateTime(2000, 1, 1),
+      firstDate: DateTime(1900),
+      lastDate: DateTime.now(),
+      locale: const Locale("fr", "FR"),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.blue,
+              onPrimary: Colors.white,
+              onSurface: Colors.black,
+            ),
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(foregroundColor: Colors.blue),
+            ),
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      final formattedDate =
+          "${picked.day.toString().padLeft(2, '0')}/"
+          "${picked.month.toString().padLeft(2, '0')}/"
+          "${picked.year}";
+      setState(() {
+        dateNaissanceController.text = formattedDate;
+      });
+    }
+  }
+
+  Widget _buildStepContent() {
+    switch (currentStep) {
+      case 1:
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "État de santé",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            const SizedBox(height: 8),
-                            const Text(
-                              "Dernière mise à jour: 12/01/2024",
-                              style: TextStyle(
-                                  color: Colors.white70, fontSize: 14),
-                            ),
-                            const SizedBox(height: 8),
-                            Row(
-                              children: [
-                                Column(
-                                  children: const [
-                                    Text("3",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20)),
-                                    Text("Traitements actifs",
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 14)),
-                                  ],
-                                ),
-                                const SizedBox(width: 24),
-                                Column(
-                                  children: const [
-                                    Text("2",
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 20)),
-                                    Text("RDV à venir",
-                                        style: TextStyle(
-                                            color: Colors.white70,
-                                            fontSize: 14)),
-                                  ],
-                                ),
-                              ],
-                            )
-                          ],
-                        ),
-                        Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.white24,
-                            borderRadius: BorderRadius.circular(30),
+                        const Text('Nom', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: nomController,
+                          decoration: const InputDecoration(
+                            labelText: "Nom",
+                            border: OutlineInputBorder(),
                           ),
-                          child: const Icon(FontAwesomeIcons.heartPulse,
-                              color: Colors.white, size: 27),
-                        )
+                        ),
                       ],
                     ),
                   ),
-                ),
-                const SizedBox(height: 16),
-                // Grid de fonctionnalités
-                GridView.count(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 16,
-                  mainAxisSpacing: 16,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  childAspectRatio: 1,
-                  children: [
-                    _buildFeatureCard(
-                      icon: Icons.folder_open,
-                      title: "Mon dossier",
-                      subtitle: "Historique & traitement",
-                      textColor: Colors.black,
-                      iconColor: Colors.blue,
-                      containerColor: const Color(0xB0D2E6FD),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = 1; // va sur DossierPatient
-                        });
-                      },
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text('Prénom', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 10),
+                        TextField(
+                          controller: prenomController,
+                          decoration: const InputDecoration(
+                            labelText: "Prénom",
+                            border: OutlineInputBorder(),
+                          ),
+                        ),
+                      ],
                     ),
-                    _buildFeatureCard(
-                      icon: Icons.calendar_month_outlined,
-                      title: "Rendez-vous",
-                      subtitle: "Planifier & consulter",
-                      textColor: Colors.black,
-                      iconColor: Colors.green,
-                      containerColor: const Color(0xFFC7E3CC),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = 2; // va sur rendez-vous patient
-                        });
-                      },
-                    ),
-                    _buildFeatureCard(
-                      icon: FontAwesomeIcons.hospitalSymbol,
-                      title: "Centres de santé",
-                      subtitle: "Trouver un centre",
-                      textColor: Colors.black,
-                      iconColor: Colors.purple,
-                      containerColor: const Color(0xA6E9DDFB),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {},
-                    ),
-                    _buildFeatureCard(
-                      icon: Icons.person_outline_rounded,
-                      title: "Mon profil",
-                      subtitle: "Informations personnelles",
-                      textColor: Colors.black,
-                      iconColor: Colors.orange,
-                      containerColor: const Color(0xFFFAE4B6),
-                      cardColor: const Color(0xFFF5F5F5),
-                      onTap: () {
-                        setState(() {
-                          _selectedIndex = 3; // va sur profil patient
-                        });
-                      },
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 15),
-                const Text(
-                  "Activité récente",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
-                ),
-                const ListTile(
-                  leading: Icon(FontAwesomeIcons.stethoscope,
-                      size: 20, color: Colors.blue),
-                  title: Text("Consultation générale",
-                      style: TextStyle(fontSize: 16)),
-                  subtitle: Text("Dr. Martin - Centre Saint-Louis",
-                      style: TextStyle(fontSize: 12)),
-                  trailing: Text("12/01/2024"),
-                ),
-                const ListTile(
-                  leading: Icon(FontAwesomeIcons.prescriptionBottleMedical,
-                      size: 20, color: Colors.green),
-                  title: Text("Nouvelle ordonnance",
-                      style: TextStyle(fontSize: 16)),
-                  subtitle: Text("Paracétamol 1000mg",
-                      style: TextStyle(fontSize: 12)),
-                  trailing: Text("13/01/2024"),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-      DossierPatient(),
-      // Deuxième onglet → Profil
-      ProfilPatient(),
-      // Troisième onglet → Rendez-vous
-      Rendezvous(),
-    ];
-
-    return Scaffold(
-      backgroundColor: Colors.grey[200],
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        title: const Text(
-          "Vitalia",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            color: Colors.blueAccent,
-          ),
-        ),
-        foregroundColor: Colors.black,
-        elevation: 1,
-        actions: [
-          Container(
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(30),
-              color: const Color(0xB0D2E6FD),
-            ),
-            child: IconButton(
-              onPressed: () {},
-              icon: const Icon(Icons.notifications_none, color: Colors.blue),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(30),
-                color: Colors.grey[300],
+                  ),
+                ],
               ),
-              child: IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.person_outline),
-              ),
-            ),
-          ),
-        ],
-      ),
-      // Affiche la page sélectionnée
-      body: _pages[_selectedIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        showUnselectedLabels: true,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.folder),
-            label: 'Dossier',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_month_outlined),
-            label: 'Rendez-vous',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Profil',
-          ),
-        ],
-      ),
-    );
-  }
-  Widget _buildFeatureCard({
-    required IconData icon,
-    required String title,
-    required String subtitle,
-    required Color textColor,
-    required Color iconColor,
-    required Color containerColor,
-    required Color cardColor,
-    required VoidCallback onTap,
-  }) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      elevation: 2,
-      color: cardColor,
-      child: InkWell(
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(12),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                padding: const EdgeInsets.all(14),
-                decoration: BoxDecoration(
-                  color: containerColor,
-                  borderRadius: BorderRadius.circular(15),
+              const SizedBox(height: 16),
+              const Text('Date de naissance', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(
+                controller: dateNaissanceController,
+                readOnly: true,
+                decoration: InputDecoration(
+                  labelText: "Date de naissance",
+                  hintText: "jj/mm/aaaa",
+                  border: const OutlineInputBorder(),
+                  suffixIcon: IconButton(
+                    icon: const Icon(Icons.calendar_today),
+                    onPressed: () => _selectDate(context),
+                  ),
                 ),
-                child: Icon(icon, color: iconColor, size: 25),
+              ),
+              const SizedBox(height: 16),
+              const Text("Sexe", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              Row(
+                children: [
+                  Radio<String>(
+                    value: "Masculin",
+                    groupValue: selectedSexe,
+                    onChanged: (value) => setState(() => selectedSexe = value),
+                  ),
+                  const Text("Masculin"),
+                  Radio<String>(
+                    value: "Féminin",
+                    groupValue: selectedSexe,
+                    onChanged: (value) => setState(() => selectedSexe = value),
+                  ),
+                  const Text("Féminin"),
+                ],
               ),
               const SizedBox(height: 10),
-              Text(
-                title,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                  color: textColor,
+              const Text('Téléphone', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(
+                controller: telephoneController,
+                decoration: const InputDecoration(
+                  labelText: "+229 0154632145",
+                  border: OutlineInputBorder(),
                 ),
+                keyboardType: TextInputType.phone,
               ),
-              const SizedBox(height: 2),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 3),
-                child: Text(
-                  subtitle,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 13,
-                    color: textColor.withOpacity(0.7),
-                  ),
+              const SizedBox(height: 10),
+              const Text('Email', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(
+                controller: emailController,
+                decoration: const InputDecoration(
+                  labelText: "email@exemple.com",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.emailAddress,
+              ),
+              const SizedBox(height: 10),
+              const Text('Adresse', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(
+                controller: adresseController,
+                maxLines: 4,
+                minLines: 3,
+                decoration: const InputDecoration(
+                  labelText: "Adresse complète",
+                  border: OutlineInputBorder(),
                 ),
               ),
             ],
           ),
+        );
+      case 2:
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Contact d'urgence", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 18),
+              const Text("Nom du contact", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: contactNomController, decoration: const InputDecoration(labelText: "Nom Complet", border: OutlineInputBorder())),
+              const SizedBox(height: 12),
+              const Text("Relation", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: contactRelationController, decoration: const InputDecoration(labelText: "Époux, Parent, Ami...", border: OutlineInputBorder())),
+              const SizedBox(height: 12),
+              const Text("Téléphone", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: contactTelephoneController, decoration: const InputDecoration(labelText: "+229 90 00 00 00", border: OutlineInputBorder()), keyboardType: TextInputType.phone),
+              const SizedBox(height: 12),
+              const Text("Email", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: contactEmailController, decoration: const InputDecoration(labelText: "contact@exemplegmail.com", border: OutlineInputBorder()), keyboardType: TextInputType.emailAddress),
+            ],
+          ),
+        );
+      case 3:
+        return SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const Text("Informations médicales", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 18),
+              const Text("Antécédents médicaux", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: antecedentController, maxLines: 4, minLines: 3, decoration: const InputDecoration(labelText: "maladie passées , opérations...", border: OutlineInputBorder())),
+              const SizedBox(height: 12),
+              const Text("Allergies connues", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: allergiesController, maxLines: 4, minLines: 3, decoration: const InputDecoration(labelText: "Médicaments, aliments et autre", border: OutlineInputBorder())),
+              const SizedBox(height: 12),
+              const Text("Traitements en cours", style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+              const SizedBox(height: 10),
+              TextField(controller: traitementsController, maxLines: 4, minLines: 3, decoration: const InputDecoration(labelText: "Médicaments actuel...", border: OutlineInputBorder())),
+            ],
+          ),
+        );
+      default:
+        return const SizedBox.shrink();
+    }
+  }
+
+  Widget _buildStepIndicator() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(3, (index) {
+        int step = index + 1;
+        bool isActive = step == currentStep;
+        bool isCompleted = step < currentStep;
+
+        return Row(
+          children: [
+            Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              width: 30,
+              height: 30,
+              decoration: BoxDecoration(
+                color: isActive || isCompleted ? Colors.blue : Colors.grey.shade300,
+                shape: BoxShape.circle,
+              ),
+              child: Center(
+                child: Text("$step", style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+              ),
+            ),
+            if (step != 3)
+              Container(
+                width: 40,
+                height: 2,
+                color: isCompleted ? Colors.blue : Colors.grey,
+              ),
+          ],
+        );
+      }),
+    );
+  }
+
+  @override
+  void dispose() {
+    nomController.dispose();
+    prenomController.dispose();
+    dateNaissanceController.dispose();
+    telephoneController.dispose();
+    emailController.dispose();
+    adresseController.dispose();
+    contactNomController.dispose();
+    contactRelationController.dispose();
+    contactTelephoneController.dispose();
+    contactEmailController.dispose();
+    antecedentController.dispose();
+    allergiesController.dispose();
+    traitementsController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Nouveau dossier patient")),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          children: [
+            _buildStepIndicator(),
+            const SizedBox(height: 25),
+            Expanded(child: _buildStepContent()),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                if (currentStep > 1)
+                  ElevatedButton.icon(
+                    onPressed: previousStep,
+                    icon: const Icon(Icons.arrow_back_sharp, size: 20),
+                    label: const Text("Précédent", style: TextStyle(fontSize: 16)),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey.shade200,
+                      foregroundColor: Colors.black87,
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                  ),
+                ElevatedButton.icon(
+                  onPressed: currentStep == 3 ? finish : nextStep,
+                  icon: Icon(currentStep == 3 ? Icons.check : Icons.arrow_forward_outlined, size: 20),
+                  label: Text(currentStep == 3 ? "Créer le dossier" : "Suivant", style: const TextStyle(fontSize: 16)),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.blue,
+                    foregroundColor: Colors.white,
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                  ),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
   }
 }
-

@@ -37,11 +37,6 @@ class Rendezvous extends StatelessWidget {
             // --- Onglets ---
             Container(
               margin: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(25),
-                border: Border.all(color: Colors.blue.shade100),
-              ),
               child: const TabBar(
                 labelColor: Colors.blue,
                 unselectedLabelColor: Colors.black87,
@@ -236,7 +231,7 @@ class RdvsPasses extends StatelessWidget {
                       children: [
                         Text(r["date"]!,
                             style: const TextStyle(
-                                color: Colors.grey,
+                                color: Colors.blue,
                                 fontWeight: FontWeight.bold)),
                         Text(r["heure"]!,
                             style: const TextStyle(color: Colors.grey)),
@@ -258,9 +253,27 @@ class RdvsPasses extends StatelessWidget {
                 const SizedBox(height: 8),
                 Text("Notes : ${r["notes"]}",
                     style: const TextStyle(color: Colors.black87)),
+                SizedBox(height: 12,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    OutlinedButton.icon(
+                      onPressed: () {},
+                      icon: const Icon(Icons.swap_horiz, color: Colors.blue),
+                      label: const Text("Reprendre RDV",
+                          style: TextStyle(color: Colors.blue)),
+                      style: OutlinedButton.styleFrom(
+                        side: const BorderSide(color: Colors.blue, width: 1),
+                      ),
+                    ),
+                  ],
+                ),
+
               ],
             ),
+
           ),
+
         );
       },
     );
