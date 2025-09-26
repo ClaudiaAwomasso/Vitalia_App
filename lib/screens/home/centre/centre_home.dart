@@ -20,7 +20,7 @@ class _MainPageState extends State<CentreHome> {
     RecherchePatientPage(),
     RendezVousPage(),
     //const UrgencesPage(),
-    ProfilMedecinPage(),
+    ProfilCentrePage(),
   ];
   void _onItemTapped(int index) {
     setState(() {

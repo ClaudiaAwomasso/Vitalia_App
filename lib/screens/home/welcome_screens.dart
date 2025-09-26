@@ -4,6 +4,7 @@ import 'package:vitalia_app/screens/auth/admin/admin_add_patient_screen.dart';
 import 'package:vitalia_app/screens/auth/patient/patient_login.dart';
 
 import '../auth/centre/add_consultations.dart';
+import '../auth/centre/connexion_centre.dart';
 import 'admin/admin_home.dart';
 import 'centre/centre_home.dart';
 class WelcomeScreens extends StatelessWidget {
@@ -93,7 +94,7 @@ class WelcomeScreens extends StatelessWidget {
                   subtitle: Text("Gérez vos patients et consultations directement depuis l’interface médecin. ",  ),
                   trailing: Icon(Icons.arrow_forward_outlined),
                     onTap: (){
-                      Navigator.push(context, MaterialPageRoute(builder: (context)=> CentreHome()));
+                      Navigator.push(context, MaterialPageRoute(builder: (context)=>  ConnexionCentrePage ()));
                     },
                 ),
               ),

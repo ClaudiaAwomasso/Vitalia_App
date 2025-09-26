@@ -1,107 +1,154 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:vitalia_app/modeles/patient_model.dart';
+import 'package:vitalia_app/providers/patient_provider.dart';
 
 class ProfilPatient extends StatelessWidget {
   const ProfilPatient({Key? key}) : super(key: key);
 
+  Widget _infoRow(String label, String value, {IconData? icon}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          if (icon != null) ...[
+            Icon(icon, size: 20, color: Colors.blueGrey),
+            const SizedBox(width: 10),
+          ],
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
+                const SizedBox(height: 4),
+                Text(value, style: const TextStyle(color: Colors.black87)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PatientProvider>(context);
+    final PatientModel? patient = provider.patient; // 🔹 patient connecté
+
+    if (patient == null) {
+      return const Scaffold(
+        body: Center(child: Text("Aucun patient connecté")),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pop(context);
-          },
-        ),
         title: const Text("Mon profil"),
         actions: [
           TextButton(
             onPressed: () {
-              // TODO: aller vers la page d’édition du profil
+              // TODO: navigation vers page édition
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Page d'édition à implémenter")),
+              );
             },
-            child: const Text(
-              "Modifier",
-              style: TextStyle(color: Colors.blue),
-            ),
+            child: const Text("Modifier", style: TextStyle(color: Colors.blue)),
           )
         ],
-        backgroundColor: Colors.white,
-        elevation: 0,
-        foregroundColor: Colors.black,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // Avatar rond
-            const CircleAvatar(
-              radius: 50,
-              backgroundImage: NetworkImage(
-                "https://i.pravatar.cc/150?img=47", // image exemple
-              ),
-            ),
-            const SizedBox(height: 20),
-
-            // Carte infos personnelles
+            // Header profil
             Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
-              ),
-              elevation: 2,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: const [
-                    Text(
-                      "Informations personnelles",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                padding: const EdgeInsets.all(16),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: (patient.photoUrl != null && patient.photoUrl!.isNotEmpty)
+                          ? NetworkImage(patient.photoUrl!)
+                          : null, // pas de background si pas de photo
+                      child: (patient.photoUrl == null || patient.photoUrl!.isEmpty)
+                          ? const Icon(Icons.person, size: 40, color: Colors.white)
+                          : null,
+                      backgroundColor: Colors.blueGrey.shade200, // fond gris par défaut
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("${patient.nom} ${patient.prenom}",
+                              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                          const SizedBox(height: 6),
+                          Text(patient.idVitalia, style: const TextStyle(color: Colors.black54)),
+                          const SizedBox(height: 6),
+                          Row(
+                            children: [
+                              Chip(label: Text("${patient.age} ans")),
+                              const SizedBox(width: 6),
+                              Chip(label: Text(patient.sexe)),
+                            ],
+                          )
+                        ],
                       ),
                     ),
-                    SizedBox(height: 16),
+                  ],
+                ),
+              ),
+            ),
 
-                    _InfoRow("Nom complet", "Marie Dubois"),
-                    _InfoRow("Téléphone", "+33 6 12 34 56 78"),
-                    _InfoRow("Email", "marie.dubois@email.c"
-                        "om"),
-                    _InfoRow("Date de naissance", "15/03/1985"),
-                    _InfoRow("Adresse", "25 Rue de la Paix, 75001 Paris"),
-                    _InfoRow("Numéro de sécurité sociale", "1 85 03 75 123 456"),
+            const SizedBox(height: 20),
+
+            // Infos personnelles
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Informations personnelles",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _infoRow("Téléphone", patient.telephone, icon: Icons.phone),
+                    _infoRow("Email", patient.email ?? "Non renseigné", icon: Icons.email),
+                    _infoRow("Adresse", patient.adresse ?? "Non renseignée", icon: Icons.location_on),
+                    _infoRow("Date de naissance",
+                        patient.dateNaissance.isNotEmpty ? patient.dateNaissance : "Non renseignée",
+                        icon: Icons.cake),
+                  ],
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Infos médicales
+            Card(
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              child: Padding(
+                padding: const EdgeInsets.all(14),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text("Informations médicales",
+                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                    const SizedBox(height: 12),
+                    _infoRow("Antécédents", patient.antecedentsMedicaux ?? "Aucun", icon: Icons.history),
+                    _infoRow("Allergies", patient.allergies ?? "Aucune", icon: Icons.warning),
+                    _infoRow("Traitements en cours", patient.traitementsEnCours ?? "Aucun", icon: Icons.healing),
                   ],
                 ),
               ),
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-// Widget personnalisé pour chaque ligne d’info
-class _InfoRow extends StatelessWidget {
-  final String label;
-  final String value;
-  const _InfoRow(this.label, this.value, {Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(label,
-              style: const TextStyle(
-                fontWeight: FontWeight.w600,
-                color: Colors.black87,
-              )),
-          const SizedBox(height: 4),
-          Text(value, style: const TextStyle(color: Colors.black87)),
-        ],
       ),
     );
   }

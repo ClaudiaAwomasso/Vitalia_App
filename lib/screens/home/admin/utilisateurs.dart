@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vitalia_app/screens/home/admin/ajout_dossier.dart';
+import 'ajout_medecin.dart';
+import 'nouveaucentre.dart';
 
 class GestionUtilisateursPage extends StatefulWidget {
   const GestionUtilisateursPage({super.key});
@@ -28,12 +31,15 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
             ),
             onPressed: () {
               if (filtreActif == "Médecins") {
-                // ouvrir formulaire ajout médecin
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => AjoutMedecin()));
               } else {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>NouveauDossierPatientPage()));
+                        builder: (context) => NouveauDossierPatientPage()));
               }
             },
             icon: const Icon(Icons.person_add, size: 18),
@@ -63,132 +69,94 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
             // Filtres
             Row(
               children: [
-                _buildFilterChip("Médecins (5)", filtreActif == "Médecins", Colors.purple, () {
-                  setState(() {
-                    filtreActif = "Médecins";
-                  });
-                }),
+                _buildFilterChip(
+                    "Médecins",
+                    filtreActif == "Médecins",
+                    Colors.purple,
+                        () {
+                      setState(() {
+                        filtreActif = "Médecins";
+                      });
+                    }),
                 const SizedBox(width: 8),
-                _buildFilterChip("Patients (6)", filtreActif == "Patients", Colors.teal, () {
-                  setState(() {
-                    filtreActif = "Patients";
-                  });
-                }),
+                _buildFilterChip(
+                    "Patients",
+                    filtreActif == "Patients",
+                    Colors.teal,
+                        () {
+                      setState(() {
+                        filtreActif = "Patients";
+                      });
+                    }),
               ],
             ),
             const SizedBox(height: 16),
 
             // Affichage selon filtre
-            if (filtreActif == "Médecins") ...[
-              _buildUserCard(
-                nom: "Dr. Martin Dubois",
-                specialite: "Médecine générale",
-                centre: "Centre Médical Saint-Louis",
-                email: "martin.dubois@medconnect.fr",
-                telephone: "+33 6 12 34 56 78",
-                inscrit: "15/03/2023",
-                patients: "156",
-                consultations: "12",
-              ),
-              const SizedBox(height: 16),
-              _buildUserCard(
-                nom: "Dr. Sophie Laurent",
-                specialite: "Cardiologie",
-                centre: "Hôpital Saint-Antoine",
-                email: "sophie.laurent@medconnect.fr",
-                telephone: "+33 6 22 44 55 66",
-                inscrit: "10/06/2022",
-                patients: "89",
-                consultations: "7",
-              ),
-              const SizedBox(height: 16),
-              _buildUserCard(
-                nom: "Dr. Ahmed Ben Salah",
-                specialite: "Pédiatrie",
-                centre: "Clinique Les Lilas",
-                email: "ahmed.bensalah@medconnect.fr",
-                telephone: "+33 6 45 67 89 00",
-                inscrit: "02/01/2024",
-                patients: "120",
-                consultations: "9",
-              ),
-              const SizedBox(height: 16),
-              _buildUserCard(
-                nom: "Dr. Claire Fontaine",
-                specialite: "Dermatologie",
-                centre: "Centre Dermatologique Paris",
-                email: "claire.fontaine@medconnect.fr",
-                telephone: "+33 6 77 88 99 11",
-                inscrit: "20/07/2023",
-                patients: "64",
-                consultations: "5",
-              ),
-              const SizedBox(height: 16),
-              _buildUserCard(
-                nom: "Dr. Jean Dupont",
-                specialite: "Orthopédie",
-                centre: "CHU Lyon Sud",
-                email: "jean.dupont@medconnect.fr",
-                telephone: "+33 6 33 44 55 66",
-                inscrit: "05/05/2022",
-                patients: "101",
-                consultations: "8",
-              ),
-            ] else ...[
-              _buildPatientCard(
-                nom: "Alice Martin",
-                age: "29 ans",
-                email: "alice.martin@example.com",
-                telephone: "+33 6 99 88 77 66",
-                inscrit: "10/04/2023",
-                consultations: "3",
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                nom: "Lucas Bernard",
-                age: "42 ans",
-                email: "lucas.bernard@example.com",
-                telephone: "+33 6 55 44 33 22",
-                inscrit: "01/08/2022",
-                consultations: "7",
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                nom: "Camille Durand",
-                age: "35 ans",
-                email: "camille.durand@example.com",
-                telephone: "+33 6 77 11 22 33",
-                inscrit: "15/01/2024",
-                consultations: "2",
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                nom: "Nicolas Petit",
-                age: "50 ans",
-                email: "nicolas.petit@example.com",
-                telephone: "+33 6 88 77 66 55",
-                inscrit: "23/09/2021",
-                consultations: "5",
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                nom: "Sophie Morel",
-                age: "27 ans",
-                email: "sophie.morel@example.com",
-                telephone: "+33 6 22 11 44 55",
-                inscrit: "09/11/2023",
-                consultations: "1",
-              ),
-              const SizedBox(height: 16),
-              _buildPatientCard(
-                nom: "Hugo Lefevre",
-                age: "31 ans",
-                email: "hugo.lefevre@example.com",
-                telephone: "+33 6 66 55 44 33",
-                inscrit: "30/06/2022",
-                consultations: "4",
-              ),
-            ]
+            if (filtreActif == "Médecins")
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('medecins').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text("Aucun médecin trouvé"));
+                  }
+                  final medecins = snapshot.data!.docs;
+                  return Column(
+                    children: medecins.map((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          _buildUserCard(
+                            nom: "Dr. ${data['prenom'] ?? ''} ${data['nom'] ?? ''}",
+                            specialite: data['specialite'] ?? '',
+                            centre: data['centre'] ?? '',
+                            email: data['email'] ?? '',
+                            telephone: data['telephone'] ?? '',
+                            inscrit: data['dateInscription'] ?? '',
+                            patients: data['patients']?.toString() ?? '0',
+                            consultations: data['consultations']?.toString() ?? '0',
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    }).toList(),
+                  );
+                },
+              )
+            else
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance.collection('patients').snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(child: Text("Aucun patient trouvé"));
+                  }
+                  final patients = snapshot.data!.docs;
+                  return Column(
+                    children: patients.map((doc) {
+                      final data = doc.data() as Map<String, dynamic>;
+                      return Column(
+                        children: [
+                          _buildPatientCard(
+                            nom: "${data['prenom'] ?? ''} ${data['nom'] ?? ''}",
+                            age: data['age'] != null ? "${data['age']} ans" : 'Âge inconnu',
+                            email: data['email'] ?? '',
+                            telephone: data['telephone'] ?? '',
+                            inscrit: data['dateInscription'] ?? '',
+                            consultations: (data['consultations']?.toString() ?? '0'),
+                          ),
+                          const SizedBox(height: 16),
+                        ],
+                      );
+                    }).toList(),
+                  );
+                },
+              )
           ],
         ),
       ),
@@ -228,7 +196,6 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Ligne titre + action
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -258,7 +225,6 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
               ],
             ),
             const SizedBox(height: 8),
-            // Statut
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
               decoration: BoxDecoration(
@@ -274,16 +240,14 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
             Text("Téléphone: $telephone", style: const TextStyle(fontSize: 13)),
             Text("Inscrit le: $inscrit", style: const TextStyle(fontSize: 13)),
             const SizedBox(height: 12),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildStatItem(patients, "Patients", Colors.blue),
-                  _buildStatItem(consultations, "Consultations hier", Colors.green),
-                  Text("Détails",
-                      style: TextStyle(color: Colors.purple[700], fontWeight: FontWeight.bold)),
-                ],
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                _buildStatItem(patients, "Patients", Colors.blue),
+                _buildStatItem(consultations, "Consultations", Colors.green),
+                Text("Détails",
+                    style: TextStyle(color: Colors.purple[700], fontWeight: FontWeight.bold)),
+              ],
             )
           ],
         ),
@@ -308,7 +272,6 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Ligne titre + action
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -327,8 +290,7 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(nom, style: const TextStyle(fontWeight: FontWeight.bold)),
-                        Text(age,
-                            style: const TextStyle(fontSize: 12, color: Colors.black54)),
+                        Text(age, style: const TextStyle(fontSize: 12, color: Colors.black54)),
                       ],
                     ),
                   ],
@@ -365,12 +327,10 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
     );
   }
 
-  // --- Petit widget stat ---
   Widget _buildStatItem(String number, String label, Color color) {
     return Row(
       children: [
-        Text(number,
-            style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 14)),
+        Text(number, style: TextStyle(fontWeight: FontWeight.bold, color: color, fontSize: 14)),
         const SizedBox(width: 4),
         Text(label, style: const TextStyle(fontSize: 12)),
       ],

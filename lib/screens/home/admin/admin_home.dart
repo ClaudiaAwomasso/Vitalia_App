@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vitalia_app/screens/home/admin/parametre.dart';
 import 'package:vitalia_app/screens/home/admin/utilisateurs.dart';
 import 'dashboard_page.dart';
 import 'gestion_centres.dart';
@@ -17,7 +18,8 @@ class _HomeCentreState extends State<HomeCentre> {
     const AdminDashboardPage(),
     const GestionCentresPage(),
     const GestionUtilisateursPage(),
-    const Center(child: Text("Paramètres")),       // à remplacer
+    const ParametresSystemePage(),
+    // à remplacer
   ];
 
   @override

@@ -415,6 +415,9 @@ class FirestoreService {
   }
 }*/
  */
+
+
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
 
@@ -422,12 +425,15 @@ class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
   final String collectionPatients = 'patients';
 
-  // Ajouter un patient
+  // -------------------- PATIENTS --------------------
+
+  /// Ajouter un patient
   Future<void> addPatient(PatientModel patient) async {
+    // On utilise l'idVitalia comme identifiant unique dans Firestore
     await _db.collection(collectionPatients).doc(patient.idVitalia).set(patient.toMap());
   }
 
-  // Obtenir patient par téléphone et ID
+  /// Récupérer un patient par téléphone et idVitalia (connexion)
   Future<PatientModel?> getPatientByPhoneAndID(String phone, String idVitalia) async {
     final doc = await _db.collection(collectionPatients).doc(idVitalia).get();
     if (doc.exists) {
@@ -439,13 +445,51 @@ class FirestoreService {
     return null;
   }
 
-  // Mettre à jour patient complet
+  /// Récupérer un patient par son idVitalia
+  Future<PatientModel?> getPatientById(String idVitalia) async {
+    final doc = await _db.collection(collectionPatients).doc(idVitalia).get();
+    if (doc.exists) {
+      return PatientModel.fromMap(doc.data()!, doc.id);
+    }
+    return null;
+  }
+
+  /// Mettre à jour les informations d’un patient
   Future<void> updatePatient(String idVitalia, PatientModel updatedPatient) async {
     await _db.collection(collectionPatients).doc(idVitalia).update(updatedPatient.toMap());
   }
 
-  // Mettre à jour uniquement la photo
+  /// Mettre à jour uniquement la photo d’un patient
   Future<void> updatePatientPhoto(String idVitalia, String photoUrl) async {
     await _db.collection(collectionPatients).doc(idVitalia).update({'photoUrl': photoUrl});
+  }
+
+  /// Supprimer un patient
+  Future<void> deletePatient(String idVitalia) async {
+    await _db.collection(collectionPatients).doc(idVitalia).delete();
+  }
+
+  /// Récupérer tous les patients (option: limit)
+  Future<List<PatientModel>> listPatients({int? limit}) async {
+    Query<Map<String, dynamic>> query = _db.collection(collectionPatients);
+    if (limit != null) query = query.limit(limit);
+    final snap = await query.get();
+    return snap.docs.map((d) => PatientModel.fromMap(d.data(), d.id)).toList();
+  }
+
+  /// Stream temps réel pour afficher dynamiquement les patients dans la UI
+  Stream<List<PatientModel>> patientsStream() {
+    return _db.collection(collectionPatients).snapshots().map(
+          (snap) => snap.docs.map((d) => PatientModel.fromMap(d.data(), d.id)).toList(),
+    );
+  }
+
+  // -------------------- UTILS --------------------
+
+  /// Générer un ID Vitalia unique pour un patient
+  String generateIdVitalia() {
+    final year = DateTime.now().year;
+    final rnd = DateTime.now().millisecondsSinceEpoch % 1000000; // 6 chiffres
+    return 'VIT-$year-$rnd';
   }
 }

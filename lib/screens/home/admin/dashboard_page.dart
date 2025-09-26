@@ -55,7 +55,7 @@ class AdminDashboardPage extends StatelessWidget {
             ),
             const SizedBox(height: 4),
             const Text(
-              "Vue d'ensemble du système MedConnect",
+              "Vue d'ensemble du système Vitalia",
               style: TextStyle(color: Colors.black54),
             ),
             const SizedBox(height: 20),

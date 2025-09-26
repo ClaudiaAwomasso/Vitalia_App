@@ -64,7 +64,7 @@ class PatientModel {
   final String dateNaissance;      // format "jj/mm/aaaa"
   final String sexe;
   final int age;
-  final String? photoUrl;
+  late final String? photoUrl;
 
   // Contact d’urgence (champs séparés)
   final String? contactNom;
@@ -76,6 +76,9 @@ class PatientModel {
   final String? antecedentsMedicaux;
   final String? allergies;
   final String? traitementsEnCours;
+
+  final String dateInscription;
+  final int consultations;
 
   PatientModel({
     required this.id,
@@ -96,6 +99,8 @@ class PatientModel {
     this.antecedentsMedicaux,
     this.allergies,
     this.traitementsEnCours,
+    required this.dateInscription,
+    required this.consultations,
   });
 
   // Firestore -> PatientModel
@@ -119,6 +124,8 @@ class PatientModel {
       antecedentsMedicaux: map['antecedentsMedicaux'],
       allergies: map['allergies'],
       traitementsEnCours: map['traitementsEnCours'],
+      dateInscription: map['dateInscription'] ?? "",
+      consultations: map['consultations'] ?? 0,
     );
   }
 
@@ -142,6 +149,8 @@ class PatientModel {
       'antecedentsMedicaux': antecedentsMedicaux,
       'allergies': allergies,
       'traitementsEnCours': traitementsEnCours,
+      'dateInscription': dateInscription,
+      'consultations': consultations,
     };
   }
 }

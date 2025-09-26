@@ -97,7 +97,7 @@ class PatientProvider extends ChangeNotifier {
   }*/
 }
 */
-
+/*
 class PatientProvider extends ChangeNotifier {
   PatientModel? _patient; // patient connecté
   final FirestoreService _firestore = FirestoreService();
@@ -153,7 +153,6 @@ class PatientProvider extends ChangeNotifier {
     String downloadUrl = await ref.getDownloadURL();
 
     await _firestore.updatePatientPhoto(_patient!.idVitalia, downloadUrl);
-
     _patient = PatientModel(
       id: _patient!.id,
       idVitalia: _patient!.idVitalia,
@@ -175,6 +174,75 @@ class PatientProvider extends ChangeNotifier {
       traitementsEnCours: _patient!.traitementsEnCours,
     );
 
+    notifyListeners();
+  }
+}
+*/
+
+
+import 'dart:io';
+import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:vitalia_app/modeles/patient_model.dart';
+import 'package:vitalia_app/services/firestore_service.dart';
+
+class PatientProvider extends ChangeNotifier {
+  PatientModel? _patient;
+  final FirestoreService _firestore = FirestoreService();
+
+  PatientModel? get patient => _patient;
+
+  /// Ajouter un nouveau patient
+  Future<void> addPatient(PatientModel patient) async {
+    await _firestore.addPatient(patient);
+    notifyListeners();
+  }
+
+  /// Connexion patient
+  Future<bool> login(String phone, String idVitalia) async {
+    final result = await _firestore.getPatientByPhoneAndID(phone, idVitalia);
+    if (result != null) {
+      _patient = result;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  /// Déconnexion patient
+  void logout() {
+    _patient = null;
+    notifyListeners();
+  }
+
+  /// Mettre à jour toutes les infos du patient
+  Future<void> updatePatient(PatientModel updatedPatient) async {
+    if (_patient == null) return;
+    await _firestore.updatePatient(_patient!.idVitalia, updatedPatient);
+    _patient = updatedPatient;
+    notifyListeners();
+  }
+
+  /// Mettre à jour uniquement la photo de profil
+  Future<void> updatePatientPhoto() async {
+    if (_patient == null) return;
+
+    final picker = ImagePicker();
+    final XFile? image = await picker.pickImage(source: ImageSource.gallery);
+    if (image == null) return;
+
+    File file = File(image.path);
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("patients_photos/${_patient!.idVitalia}.jpg");
+
+    await ref.putFile(file);
+    String downloadUrl = await ref.getDownloadURL();
+
+    await _firestore.updatePatientPhoto(_patient!.idVitalia, downloadUrl);
+
+    _patient!.photoUrl = downloadUrl;
     notifyListeners();
   }
 }
