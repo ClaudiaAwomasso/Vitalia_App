@@ -53,7 +53,6 @@ class _AjoutMedecinState extends State<AjoutMedecin> {
       setState(() => _loading = false);
     }
   }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,33 +65,80 @@ class _AjoutMedecinState extends State<AjoutMedecin> {
             child: Column(
               children: [
                 TextFormField(
+                    cursorColor: Colors.blue,
                   controller: _nomController,
-                  decoration: const InputDecoration(labelText: 'Nom'),
+                  decoration: const InputDecoration(labelText: 'Nom',
+                    labelStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),
+
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
+
                 ),
+                SizedBox(height: 15,),
                 TextFormField(
+                  cursorColor: Colors.blue,
                   controller: _prenomController,
-                  decoration: const InputDecoration(labelText: 'Prénom'),
+                  decoration: const InputDecoration(labelText: 'Prénom',
+                    labelStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
                 ),
+                SizedBox(height: 15,),
                 TextFormField(
+                  cursorColor: Colors.blue,
                   controller: _specialiteController,
-                  decoration: const InputDecoration(labelText: 'Spécialité'),
+                  decoration: const InputDecoration(labelText: 'Spécialité',
+                    labelStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
                 ),
+                SizedBox(height: 15,),
                 TextFormField(
+                  cursorColor: Colors.blue,
                   controller: _centreController,
-                  decoration: const InputDecoration(labelText: 'Centre'),
+                  decoration: const InputDecoration(labelText: 'Centre',
+                    labelStyle: TextStyle(color: Colors.black),
+                    border: OutlineInputBorder(),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
                 ),
+                SizedBox(height: 15,),
                 TextFormField(
                   controller: _emailController,
-                  decoration: const InputDecoration(labelText: 'Email'),
+                  decoration: const InputDecoration(labelText: 'Email',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),
+
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
                 ),
+                SizedBox(height: 15,),
                 TextFormField(
                   controller: _telephoneController,
-                  decoration: const InputDecoration(labelText: 'Téléphone'),
+                  decoration: const InputDecoration(labelText: 'Téléphone',
+                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(color: Colors.black),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                    ),
+                  ),
                   validator: (v) => v!.isEmpty ? 'Requis' : null,
                 ),
                 const SizedBox(height: 20),

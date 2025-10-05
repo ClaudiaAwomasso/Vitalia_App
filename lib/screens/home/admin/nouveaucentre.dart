@@ -258,10 +258,15 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
             children: [
               // Email
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: emailController,
                 decoration: const InputDecoration(
                   labelText: "Email de connexion",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) =>
@@ -271,11 +276,16 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Mot de passe
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: passwordController,
                 obscureText: !showPassword,
                 decoration: InputDecoration(
                   labelText: "Mot de passe",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: const OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                   suffixIcon: IconButton(
                     icon: Icon(
                       showPassword ? Icons.visibility_off : Icons.visibility,
@@ -290,10 +300,15 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Nom du centre
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: nomController,
                 decoration: const InputDecoration(
                   labelText: "Nom du centre",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
                 validator: (value) =>
                 value!.isEmpty ? "Entrez le nom du centre" : null,
@@ -302,30 +317,45 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Type
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: typeController,
                 decoration: const InputDecoration(
                   labelText: "Type (Clinique, Hôpital, etc.)",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
 
               // Directeur
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: directeurController,
                 decoration: const InputDecoration(
                   labelText: "Directeur",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
 
               // Téléphone
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: telephoneController,
                 decoration: const InputDecoration(
                   labelText: "Téléphone",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
                 keyboardType: TextInputType.phone,
               ),
@@ -333,10 +363,15 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Adresse
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: adresseController,
                 decoration: const InputDecoration(
                   labelText: "Adresse",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
               ),
               const SizedBox(height: 12),
@@ -361,10 +396,15 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Nombre de médecins
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: medecinsController,
                 decoration: const InputDecoration(
                   labelText: "Nombre de médecins",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) =>
@@ -374,10 +414,16 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Nombre de patients
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: patientsController,
                 decoration: const InputDecoration(
                   labelText: "Nombre de patients",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
+
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) =>
@@ -387,10 +433,15 @@ class _AjouterCentrePageState extends State<AjouterCentrePage> {
 
               // Nombre de consultations
               TextFormField(
+                cursorColor: Colors.blue,
                 controller: consultationsController,
                 decoration: const InputDecoration(
                   labelText: "Nombre de consultations",
+                  labelStyle: TextStyle(color: Colors.black),
                   border: OutlineInputBorder(),
+                  focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                  ),
                 ),
                 keyboardType: TextInputType.number,
                 validator: (value) =>

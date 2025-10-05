@@ -571,3 +571,4 @@ class _GestionCentresPageState extends State<GestionCentresPage> {
     );
   }
 }
+

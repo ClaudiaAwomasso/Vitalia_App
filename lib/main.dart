@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:vitalia_app/providers/consultations_provider.dart';
 import 'package:vitalia_app/providers/medecin_provider.dart';
 import 'package:vitalia_app/screens/home/welcome_screens.dart';
 import 'firebase_options.dart';
@@ -26,6 +27,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => PatientProvider()),
         ChangeNotifierProvider(create: (_) => MedecinProvider()),
+        ChangeNotifierProvider(create: (_) => ConsultationProvider ()),
       ],
       child: MaterialApp(
         color: Color(0xFFF1F7FE),

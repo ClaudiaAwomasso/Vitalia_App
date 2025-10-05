@@ -50,7 +50,7 @@ class PatientModel {
 */
 
 
-
+/*
 import 'package:vitalia_app/modeles/consultation_model.dart';
 
 class PatientModel {
@@ -149,6 +149,94 @@ class PatientModel {
       'antecedentsMedicaux': antecedentsMedicaux,
       'allergies': allergies,
       'traitementsEnCours': traitementsEnCours,
+      'dateInscription': dateInscription,
+      'consultations': consultations,
+    };
+  }
+}*/
+
+class PatientModel {
+  final String id;                 // ID Firestore
+  final String idVitalia;          // Identifiant unique patient
+  final String nom;
+  final String prenom;
+  final String telephone;
+  final String? email;
+  final String? adresse;
+  final String dateNaissance;      // format "jj/mm/aaaa"
+  final String sexe;
+  final int age;
+  late final String? photoUrl;
+
+  // Contact d’urgence
+  final String? contactNom;
+  final String? contactRelation;
+  final String? contactTelephone;
+  final String? contactEmail;
+
+  final String dateInscription;
+  final int consultations;
+
+  PatientModel({
+    required this.id,
+    required this.idVitalia,
+    required this.nom,
+    required this.prenom,
+    required this.telephone,
+    this.email,
+    this.adresse,
+    required this.dateNaissance,
+    required this.sexe,
+    required this.age,
+    this.photoUrl,
+    this.contactNom,
+    this.contactRelation,
+    this.contactTelephone,
+    this.contactEmail,
+    required this.dateInscription,
+    required this.consultations,
+  });
+
+  // Firestore -> PatientModel
+  factory PatientModel.fromMap(Map<String, dynamic> map, String documentId) {
+    return PatientModel(
+      id: documentId,
+      idVitalia: map['idVitalia'] ?? "",
+      nom: map['nom'] ?? "",
+      prenom: map['prenom'] ?? "",
+      telephone: map['telephone'] ?? "",
+      email: map['email'],
+      adresse: map['adresse'],
+      dateNaissance: map['dateNaissance'] ?? "",
+      sexe: map['sexe'] ?? "",
+      age: map['age'] ?? 0,
+      photoUrl: map['photoUrl'],
+      contactNom: map['contactNom'],
+      contactRelation: map['contactRelation'],
+      contactTelephone: map['contactTelephone'],
+      contactEmail: map['contactEmail'],
+      dateInscription: map['dateInscription'] ?? "",
+      consultations: map['consultations'] ?? 0,
+    );
+  }
+
+  // PatientModel -> Firestore
+  Map<String, dynamic> toMap() {
+    return {
+      'idVitalia': idVitalia,
+      'nom': nom,
+      'prenom': prenom,
+      'telephone': telephone,
+      'email': email,
+      'adresse': adresse,
+      'dateNaissance': dateNaissance,
+      'sexe': sexe,
+      'age': age,
+      'photoUrl': photoUrl,
+      'contactNom': contactNom,
+      'contactRelation': contactRelation,
+      'contactTelephone': contactTelephone,
+      'contactEmail': contactEmail,
       'dateInscription': dateInscription,
       'consultations': consultations,
     };

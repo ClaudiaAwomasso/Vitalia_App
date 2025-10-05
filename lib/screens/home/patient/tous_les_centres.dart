@@ -29,7 +29,6 @@ class _CentresDeSantePageState extends State<CentresDeSantePage> {
       "specialites": ["Gynécologie", "Dermatologie"]
     },
   ];
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,7 +53,6 @@ class _CentresDeSantePageState extends State<CentresDeSantePage> {
               ),
             ),
           ),
-
           // Filtres
           SizedBox(
             height: 45,
@@ -69,9 +67,7 @@ class _CentresDeSantePageState extends State<CentresDeSantePage> {
               ],
             ),
           ),
-
           const SizedBox(height: 8),
-
           // Liste des centres
           Expanded(
             child: ListView.builder(
@@ -83,7 +79,6 @@ class _CentresDeSantePageState extends State<CentresDeSantePage> {
                 if (filtreActif != "Tous" && !c["tags"].contains(filtreActif)) {
                   return const SizedBox.shrink();
                 }
-
                 return Card(
                   margin: const EdgeInsets.all(12),
                   shape: RoundedRectangleBorder(
@@ -137,9 +132,7 @@ class _CentresDeSantePageState extends State<CentresDeSantePage> {
                                     color: Colors.blue)),
                           ],
                         ),
-
                         const SizedBox(height: 8),
-
                         // Spécialités
                         Wrap(
                           spacing: 6,

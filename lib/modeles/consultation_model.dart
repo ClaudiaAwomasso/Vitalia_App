@@ -1,106 +1,64 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ConsultationModel {
-  final String id;
-  final String titre;
-  final String medecin;
-  final String lieu;
+class Consultation {
+  final String id; // ID du document Firestore
+  final String patientId;
+  final String? medecinId;  // facultatif
   final DateTime date;
+  final String? motif;      // facultatif
+  final String? statut;     // facultatif
   final String diagnostic;
-  final List<Traitement> traitements;
-  final List<Ordonnance> ordonnances;
-  ConsultationModel({
+  final String notes;
+  final List<String> ordonnances;
+  final List<String> traitements;
+  final List<String> antecedents;
+
+  Consultation({
     required this.id,
-    required this.titre,
-    required this.medecin,
-    required this.lieu,
+    required this.patientId,
+    this.medecinId,
     required this.date,
+    this.motif,
+    this.statut,
     required this.diagnostic,
-    this.traitements = const [],
-    this.ordonnances = const [],
+    required this.notes,
+    required this.ordonnances,
+    required this.traitements,
+    required this.antecedents,
   });
 
-  factory ConsultationModel.fromMap(Map<String, dynamic> map, {String? id}) {
-    return ConsultationModel(
-      id: id ?? map['id'] ?? "",
-      titre: map['titre'] ?? "",
-      medecin: map['medecin'] ?? "",
-      lieu: map['lieu'] ?? "",
-      date: (map['date'] as Timestamp).toDate(),
-      diagnostic: map['diagnostic'] ?? "",
-      traitements: (map['traitements'] as List<dynamic>? ?? [])
-          .map((t) => Traitement.fromMap(t))
-          .toList(),
-      ordonnances: (map['ordonnances'] as List<dynamic>? ?? [])
-          .map((o) => Ordonnance.fromMap(o))
-          .toList(),
+  // Firestore → Objet
+  factory Consultation.fromMap(Map<String, dynamic> data, String documentId) {
+    return Consultation(
+      id: documentId,
+      patientId: data['patientId'] ?? '',
+      medecinId: data['medecinId'],
+      date: data['date'] != null
+          ? (data['date'] as Timestamp).toDate()
+          : DateTime.now(),
+      motif: data['motif'],
+      statut: data['statut'],
+      diagnostic: data['diagnostic'] ?? '',
+      notes: data['notes'] ?? '',
+      ordonnances: List<String>.from(data['ordonnances'] ?? []),
+      traitements: List<String>.from(data['traitements'] ?? []),
+      antecedents: List<String>.from(data['antecedents'] ?? []),
     );
   }
 
-
+  // Objet → Firestore
   Map<String, dynamic> toMap() {
     return {
-      'titre': titre,
-      'medecin': medecin,
-      'lieu': lieu,
+      'patientId': patientId,
+      'medecinId': medecinId ?? '',  // toujours présent
       'date': Timestamp.fromDate(date),
+      'motif': motif ?? '',          // toujours présent
+      'statut': statut ?? '',        // toujours présent
       'diagnostic': diagnostic,
-      'traitements': traitements.map((t) => t.toMap()).toList(),
-      'ordonnances': ordonnances.map((o) => o.toMap()).toList(),
-    };
-  }
-}
-// traitement_model.dart ou dans consultation_model.dart
-
-class Traitement {
-  final String medicament;
-  final String dosage;
-  final String frequence;
-
-  Traitement({
-    required this.medicament,
-    required this.dosage,
-    required this.frequence,
-  });
-
-  factory Traitement.fromMap(Map<String, dynamic> map) {
-    return Traitement(
-      medicament: map['medicament'] ?? "",
-      dosage: map['dosage'] ?? "",
-      frequence: map['frequence'] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'medicament': medicament,
-      'dosage': dosage,
-      'frequence': frequence,
-    };
-  }
-}
-
-class Ordonnance {
-  final String medicaments;
-  final String date;
-
-  Ordonnance({
-    required this.medicaments,
-    required this.date,
-  });
-
-  factory Ordonnance.fromMap(Map<String, dynamic> map) {
-    return Ordonnance(
-      medicaments: map['medicaments'] ?? "",
-      date: map['date'] ?? "",
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'medicaments': medicaments,
-      'date': date,
+      'notes': notes,
+      'ordonnances': ordonnances,
+      'traitements': traitements,
+      'antecedents': antecedents,
     };
   }
 }

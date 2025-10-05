@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vitalia_app/screens/home/admin/utilisateurs.dart';
 
 import 'gestion_centres.dart';
@@ -142,6 +143,28 @@ class AdminDashboardPage extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            SizedBox(height: 15,),
+            const Text(
+              "Activité récente",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.w400),
+            ),
+            const ListTile(
+              leading: Icon(FontAwesomeIcons.stethoscope,
+                  size: 20, color: Colors.blue),
+              title: Text("Nouveau centre : Clinique des Oliviers",
+                  style: TextStyle(fontSize: 16)),
+
+              trailing: Text("il y à 2h"),
+            ),
+            const ListTile(
+              leading: Icon(FontAwesomeIcons.prescriptionBottleMedical,
+                  size: 20, color: Colors.green),
+              title: Text("Nouvelle ordonnance",
+                  style: TextStyle(fontSize: 16)),
+              subtitle: Text("Paracétamol 1000mg",
+                  style: TextStyle(fontSize: 12)),
+              trailing: Text("13/01/2024"),
             ),
           ],
         ),

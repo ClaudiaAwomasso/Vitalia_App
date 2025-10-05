@@ -130,7 +130,7 @@ class ProfilPatient extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Infos médicales
-            Card(
+         /*   Card(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
               child: Padding(
                 padding: const EdgeInsets.all(14),
@@ -146,7 +146,7 @@ class ProfilPatient extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
+            ),*/
           ],
         ),
       ),

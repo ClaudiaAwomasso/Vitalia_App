@@ -8,3 +8,4 @@ String generateVitaliaID(){
   int randomNumber = 1000 + Random().nextInt(9000);
   return "VIT-${now.year}-$randomNumber";
 }
+

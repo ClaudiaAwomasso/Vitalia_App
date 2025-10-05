@@ -330,7 +330,7 @@ class DashboardPage extends StatelessWidget {
           future: _getCentreInfo(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator(color: Colors.blue,));
             }
             if (!snapshot.hasData || snapshot.data == null) {
               return const Center(child: Text("Aucune information trouvée"));

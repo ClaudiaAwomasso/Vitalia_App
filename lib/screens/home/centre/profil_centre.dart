@@ -371,6 +371,7 @@ class _ProfilCentrePageState extends State<ProfilCentrePage> {
             children: [
               /// --- Carte Profil ---
               Card(
+                color: Colors.white,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12)),
                 child: Padding(
@@ -424,6 +425,7 @@ class _ProfilCentrePageState extends State<ProfilCentrePage> {
                       color: Colors.blue)),
               const SizedBox(height: 8),
               Card(
+                color: Colors.white,
                 child: Column(
                   children: [
                     ListTile(

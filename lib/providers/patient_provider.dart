@@ -4,6 +4,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
 import 'package:vitalia_app/services/firestore_service.dart';
+
+import '../modeles/consultation_model.dart';
 /*
 class PatientProvider extends ChangeNotifier {
   PatientModel? _patient; // patient connecté
@@ -180,17 +182,11 @@ class PatientProvider extends ChangeNotifier {
 */
 
 
-import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:vitalia_app/modeles/patient_model.dart';
-import 'package:vitalia_app/services/firestore_service.dart';
-
 class PatientProvider extends ChangeNotifier {
   PatientModel? _patient;
   final FirestoreService _firestore = FirestoreService();
 
+  // -------------------- PATIENT --------------------
   PatientModel? get patient => _patient;
 
   /// Ajouter un nouveau patient
@@ -244,5 +240,38 @@ class PatientProvider extends ChangeNotifier {
 
     _patient!.photoUrl = downloadUrl;
     notifyListeners();
+  }
+
+  // -------------------- CONSULTATIONS --------------------
+  List<Consultation> _consultations = [];
+
+  List<Consultation> get consultations => _consultations;
+
+  /// Récupérer toutes les consultations d’un patient
+  Future<void> fetchConsultationsForPatient(String patientId) async {
+    _consultations =
+    await _firestore.getConsultationsByPatient(patientId);
+    notifyListeners();
+  }
+
+  /// Ajouter une consultation pour ce patient
+  Future<void> addConsultation(Consultation consultation) async {
+    final id = await _firestore.addConsultation(consultation);
+    // Rafraîchir la liste
+    await fetchConsultationsForPatient(consultation.patientId);
+  }
+
+  /// Mettre à jour une consultation
+  Future<void> updateConsultation(Consultation consultation) async {
+    if (consultation.id.isEmpty) return;
+    await _firestore.updateConsultation(consultation.id, consultation);
+    await fetchConsultationsForPatient(consultation.patientId);
+  }
+
+  /// Supprimer une consultation
+  Future<void> deleteConsultation(Consultation consultation) async {
+    if (consultation.id.isEmpty) return;
+    await _firestore.deleteConsultation(consultation.id);
+    await fetchConsultationsForPatient(consultation.patientId);
   }
 }
