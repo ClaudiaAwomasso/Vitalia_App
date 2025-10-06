@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:vitalia_app/screens/home/admin/parametre.dart';
 import 'package:vitalia_app/screens/home/admin/utilisateurs.dart';
 
 import 'gestion_centres.dart';
@@ -138,7 +139,11 @@ class AdminDashboardPage extends StatelessWidget {
                     Icons.settings,
                     Colors.orange,
                         () {
-                      print("Navigation vers paramètres");
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>ParametresSystemePage()));
+
                     },
                   ),
                 ),

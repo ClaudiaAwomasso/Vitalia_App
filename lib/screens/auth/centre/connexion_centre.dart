@@ -34,7 +34,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
                 ),
                 const SizedBox(height: 20),
                 const Text(
-                  'Accédez à votre dossier médical',
+                  'Interface professionnelle de santé',
                   style: TextStyle(fontSize: 18),
                 ),
                 SizedBox(height: 20,),
@@ -46,10 +46,15 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
                       children: [
                         // Email
                         TextFormField(
+                          cursorColor: Colors.black,
                           controller: _emailController,
                           decoration: const InputDecoration(
                             labelText: "Email",
+                            labelStyle: TextStyle(color:Colors.black),
                             border: OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                            ),
                           ),
                           keyboardType: TextInputType.emailAddress,
                           validator: (val) =>
@@ -59,11 +64,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
                         // Mot de passe
                         TextFormField(
+                          cursorColor: Colors.black,
                           controller: _passwordController,
                           obscureText: !showPassword,
                           decoration: InputDecoration(
                             labelText: "Mot de passe",
+
                             border: const OutlineInputBorder(),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Colors.blue, width: 2), // contour quand on clique
+                            ),
                             suffixIcon: IconButton(
                               icon: Icon(
                                 showPassword ? Icons.visibility_off : Icons.visibility,

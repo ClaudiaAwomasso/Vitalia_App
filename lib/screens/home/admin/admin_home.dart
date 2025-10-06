@@ -4,14 +4,14 @@ import 'package:vitalia_app/screens/home/admin/utilisateurs.dart';
 import 'dashboard_page.dart';
 import 'gestion_centres.dart';
 
-class HomeCentre extends StatefulWidget {
-  const HomeCentre({Key? key}) : super(key: key);
+class HomeAdmin extends StatefulWidget {
+  const HomeAdmin({Key? key}) : super(key: key);
 
   @override
-  State<HomeCentre> createState() => _HomeCentreState();
+  State<HomeAdmin> createState() => _HomeCentreState();
 }
 
-class _HomeCentreState extends State<HomeCentre> {
+class _HomeCentreState extends State<HomeAdmin> {
   int _currentIndex = 0;
 
   final List<Widget> _pages = [

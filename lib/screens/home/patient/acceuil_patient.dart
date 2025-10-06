@@ -56,7 +56,13 @@ class AcceuilPatient extends StatelessWidget {
               color: Colors.grey[300],
             ),
             child: IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PatientHomeScreen(initialIndex: 3,)),
+                );
+              },
               icon: const Icon(Icons.person_outline),
             ),
           ),

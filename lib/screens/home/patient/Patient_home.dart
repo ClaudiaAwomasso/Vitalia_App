@@ -34,11 +34,11 @@ class _PatientHomeScreenState extends State<PatientHomeScreen> {
   Widget build(BuildContext context) {
     final patient = Provider.of<PatientProvider>(context).patient;
 
-    final List<Widget> _pages = const [
-      AcceuilPatient(),
-      DossierPatient(),
-      Rendezvous(),
-      ProfilPatient(),
+    final List<Widget> _pages = [
+      const AcceuilPatient(),
+        DossierPatient(),
+      const Rendezvous(),
+      const ProfilPatient(),
     ];
     return Scaffold(
       body: _pages[_selectedIndex],

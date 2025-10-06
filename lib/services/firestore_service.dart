@@ -2,6 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:vitalia_app/modeles/patient_model.dart';
 import 'package:vitalia_app/modeles/consultation_model.dart';
 
+import '../modeles/admin_model.dart';
+
 class FirestoreService {
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
@@ -93,6 +95,29 @@ class FirestoreService {
         .orderBy('date', descending: true)
         .snapshots()
         .map((snap) => snap.docs.map((d) => Consultation.fromMap(d.data(), d.id)).toList());
+  }
+
+  // -------------------- ADMINS --------------------
+  final String collectionAdmins = 'admins';
+
+// Ajouter un admin
+  Future<void> addAdmin(AdminModel admin) async {
+    await _db.collection(collectionAdmins).doc(admin.id).set(admin.toMap());
+  }
+
+// Récupérer un admin par UID
+  Future<AdminModel?> getAdminById(String uid) async {
+    final doc = await _db.collection(collectionAdmins).doc(uid).get();
+    if (doc.exists) return AdminModel.fromMap(doc.data()!, doc.id);
+    return null;
+  }
+
+// Lister tous les admins (optionnel)
+  Future<List<AdminModel>> listAdmins({int? limit}) async {
+    Query<Map<String, dynamic>> query = _db.collection(collectionAdmins);
+    if (limit != null) query = query.limit(limit);
+    final snap = await query.get();
+    return snap.docs.map((d) => AdminModel.fromMap(d.data(), d.id)).toList();
   }
 
 }

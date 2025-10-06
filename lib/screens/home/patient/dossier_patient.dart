@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:provider/provider.dart';
+import 'package:vitalia_app/modeles/patient_model.dart';
+import 'package:vitalia_app/providers/patient_provider.dart';
 
 class DossierPatient extends StatefulWidget {
   const DossierPatient({super.key});
@@ -20,6 +23,9 @@ class _DossierMedicalPageState extends State<DossierPatient>
 
   @override
   Widget build(BuildContext context) {
+    final provider = Provider.of<PatientProvider>(context);
+    final PatientModel? patient = provider.patient;
+
     return Scaffold(
       backgroundColor: const Color(0xFFF1F7FE),
       appBar: AppBar(
@@ -28,12 +34,14 @@ class _DossierMedicalPageState extends State<DossierPatient>
         foregroundColor: Colors.black,
         elevation: 0,
       ),
-      body: Container(
-        decoration: BoxDecoration(color: Color(0xFFF1F7FE)),
+      body: patient == null
+          ? const Center(child: Text("Aucun patient connecté"))
+          : Container(
+        decoration: const BoxDecoration(color: Color(0xFFF1F7FE)),
         child: Column(
           children: [
             // 🔹 Header patient
-            _buildPatientHeader(),
+            _buildPatientHeader(patient),
 
             // 🔹 Onglets
             TabBar(
@@ -48,9 +56,8 @@ class _DossierMedicalPageState extends State<DossierPatient>
                 Tab(text: "Ordonnances"),
               ],
             ),
-            SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
+
             // 🔹 Contenu onglets
             Expanded(
               child: TabBarView(
@@ -65,12 +72,11 @@ class _DossierMedicalPageState extends State<DossierPatient>
           ],
         ),
       ),
-
     );
   }
 
-  // ✅ HEADER PATIENT
-  Widget _buildPatientHeader() {
+  // ✅ HEADER PATIENT dynamique
+  Widget _buildPatientHeader(PatientModel patient) {
     return Padding(
       padding: const EdgeInsets.all(15),
       child: Container(
@@ -79,20 +85,31 @@ class _DossierMedicalPageState extends State<DossierPatient>
         padding: const EdgeInsets.all(16),
         child: Row(
           children: [
-            const CircleAvatar(
-              backgroundColor: Color(0xB0D2E6FD),
+            CircleAvatar(
+              backgroundColor: const Color(0xB0D2E6FD),
               radius: 30,
-              child: Icon(Icons.person_outline, size: 30, color: Colors.blue,),
+              backgroundImage: (patient.photoUrl != null &&
+                  patient.photoUrl!.isNotEmpty)
+                  ? NetworkImage(patient.photoUrl!)
+                  : null,
+              child: (patient.photoUrl == null || patient.photoUrl!.isEmpty)
+                  ? const Icon(Icons.person_outline,
+                  size: 30, color: Colors.blue)
+                  : null,
             ),
             const SizedBox(width: 16),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
-                Text("Marie Dubois",
-                    style: TextStyle(
-                        fontSize: 18, fontWeight: FontWeight.bold)),
-                Text("Née le 15/03/1985"),
-                Text("N° Sécu: 1 85 03 75 123 456"),
+              children: [
+                Text(
+                  "${patient.nom} ${patient.prenom}",
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                Text(patient.dateNaissance.isNotEmpty
+                    ? "Né(e) le ${patient.dateNaissance}"
+                    : "Date de naissance non renseignée"),
+                Text("ID Vitalia : ${patient.idVitalia}"),
               ],
             )
           ],
@@ -101,7 +118,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
     );
   }
 
-  // ✅ ONGLET CONSULTATIONS
+  // ✅ ONGLET CONSULTATIONS (exemples fictifs)
   Widget _buildConsultations() {
     final consultations = [
       {
@@ -167,7 +184,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
         "frequence": "3x/jour",
         "date": "28/12/2023",
         "medecin": "Dr. Martin",
-        "duree": "7 jour"
+        "duree": "7 jours"
       },
       {
         "medicament": "Doliprane 500mg",
@@ -190,26 +207,31 @@ class _DossierMedicalPageState extends State<DossierPatient>
                 leading: Container(
                     width: 50,
                     height: 50,
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFC8E6C9), // bleu clair
+                    decoration: const BoxDecoration(
+                      color: Color(0xFFC8E6C9),
                       shape: BoxShape.circle,
                     ),
-                    child: Icon(
-                      FontAwesomeIcons.prescriptionBottle, color: Colors.green,
-                      size: 20,)),
+                    child: const Icon(
+                      FontAwesomeIcons.prescriptionBottle,
+                      color: Colors.green,
+                      size: 20,
+                    )),
                 title: Text(t["medicament"]!),
                 subtitle: Text("Fréquence : ${t["frequence"]}"),
                 trailing: Container(
                   width: 75,
                   height: 30,
-                  //  margin: EdgeInsets.all(15),
                   decoration: BoxDecoration(
-                      color: const Color(0xFFC8E6C9), // bleu clair
-                      borderRadius: BorderRadius.circular(15)
+                    color: const Color(0xFFC8E6C9),
+                    borderRadius: BorderRadius.circular(15),
                   ),
-                  child: Center(child: Text(
-                    'En cours', textAlign: TextAlign.center,
-                    style: TextStyle(color: Colors.green, fontSize: 12),)),
+                  child: const Center(
+                    child: Text(
+                      'En cours',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.green, fontSize: 12),
+                    ),
+                  ),
                 ),
               ),
               ListTile(
@@ -220,7 +242,7 @@ class _DossierMedicalPageState extends State<DossierPatient>
                     Text("Durée : ${t["duree"]}"),
                   ],
                 ),
-                subtitle: Text("Fréquence : ${t["frequence"]}"),
+                subtitle: Text("Médecin : ${t["medecin"]}"),
               ),
             ],
           ),
@@ -230,30 +252,6 @@ class _DossierMedicalPageState extends State<DossierPatient>
   }
 
   // ✅ ONGLET ORDONNANCES
-  /*Widget _buildOrdonnances() {
-    final ordonnances = [
-      {"medicaments": "Paracétamol 1000mg", "date": "12/01/2024"},
-      {"medicaments": "Doliprane 500mg", "date": "28/12/2023"},
-    ];
-
-    return ListView.builder(
-      itemCount: ordonnances.length,
-      itemBuilder: (context, index) {
-        final o = ordonnances[index];
-        return Card(
-          margin: const EdgeInsets.all(8),
-          child: ListTile(
-            title: Text(o["medicaments"]!),
-            subtitle: Text("Date : ${o["date"]}"),
-          ),
-        );
-      },
-    );
-  }
-}*/
-
-
-// ONGLET ORDONNANCES
   Widget _buildOrdonnances() {
     final ordonnances = [
       {
@@ -309,22 +307,19 @@ class _DossierMedicalPageState extends State<DossierPatient>
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: (o["medicaments"] as List<String>)
-                      .map((med) =>
-                      Row(
-                        children: [
-                          const Icon(Icons.circle,
-                              size: 8, color: Colors.blue),
-                          const SizedBox(width: 6),
-                          Text(med),
-                        ],
-                      ))
+                      .map((med) => Row(
+                    children: [
+                      const Icon(Icons.circle,
+                          size: 8, color: Colors.blue),
+                      const SizedBox(width: 6),
+                      Text(med),
+                    ],
+                  ))
                       .toList(),
                 ),
                 const SizedBox(height: 12),
                 TextButton.icon(
-                  onPressed: () {
-                    // action Télécharger
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.download, color: Colors.blue),
                   label: const Text("Télécharger",
                       style: TextStyle(color: Colors.blue)),
