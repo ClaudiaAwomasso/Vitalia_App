@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vitalia_app/screens/home/centre/profil_centre.dart';
-import 'package:vitalia_app/screens/home/centre/urgence.dart';
+import 'package:vitalia_app/screens/home/centre/rendez-vous.dart';
 import 'acceuil_centre.dart';
 import 'historique_patient.dart';
 

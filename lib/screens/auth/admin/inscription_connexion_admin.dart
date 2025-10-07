@@ -81,7 +81,6 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
                             telephoneController, "Téléphone", Icons.phone),
                         const SizedBox(height: 12),
                       ],
-
                       _buildTextField(
                           emailController, "Adresse email", Icons.email),
                       const SizedBox(height: 12),

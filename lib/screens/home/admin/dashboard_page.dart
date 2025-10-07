@@ -212,7 +212,7 @@ class AdminDashboardPage extends StatelessWidget {
       VoidCallback onTap,
       ) {
     return InkWell(
-      onTap: onTap, // 👉 Action quand on clique
+      onTap: onTap, //  Action quand on clique
       borderRadius: BorderRadius.circular(12),
       child: Container(
         decoration: BoxDecoration(

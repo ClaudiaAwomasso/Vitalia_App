@@ -16,7 +16,7 @@ class PatientHomeScreen extends StatefulWidget {
 }
 
 class _PatientHomeScreenState extends State<PatientHomeScreen> {
-  late int _selectedIndex; // 👈 devient "l ate" car on l’initialise dans initState
+  late int _selectedIndex; // 👈 devient "late" car on l’initialise dans initState
 
   @override
   void initState() {

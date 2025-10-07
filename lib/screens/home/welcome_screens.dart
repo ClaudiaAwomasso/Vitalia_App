@@ -1,10 +1,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:vitalia_app/screens/auth/patient/patient_login.dart';
-import '../auth/admin/inscription_admin.dart';
+import '../auth/admin/inscription_connexion_admin.dart';
 import '../auth/centre/connexion_centre.dart';
-import 'admin/admin_home.dart';
-import 'centre/centre_home.dart';
 class WelcomeScreens extends StatelessWidget {
   const WelcomeScreens({super.key});
 

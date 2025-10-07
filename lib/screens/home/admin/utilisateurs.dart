@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:vitalia_app/screens/home/admin/ajout_dossier.dart';
 import 'ajout_medecin.dart';
-import 'nouveaucentre.dart';
 
 class GestionUtilisateursPage extends StatefulWidget {
   const GestionUtilisateursPage({super.key});
@@ -98,7 +97,7 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
                 stream: FirebaseFirestore.instance.collection('medecins').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator(color: Colors.blue,));
                   }
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Center(child: Text("Aucun médecin trouvé"));
@@ -131,7 +130,7 @@ class _GestionUtilisateursPageState extends State<GestionUtilisateursPage> {
                 stream: FirebaseFirestore.instance.collection('patients').snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator(color:Colors.blue ,));
                   }
                   if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                     return const Center(child: Text("Aucun patient trouvé"));

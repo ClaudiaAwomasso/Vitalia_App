@@ -19,7 +19,7 @@ class _HomeCentreState extends State<HomeAdmin> {
     const GestionCentresPage(),
     const GestionUtilisateursPage(),
     const ParametresSystemePage(),
-    // à remplacer
+
   ];
 
   @override

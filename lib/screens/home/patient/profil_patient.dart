@@ -126,27 +126,6 @@ class ProfilPatient extends StatelessWidget {
                 ),
               ),
             ),
-
-            const SizedBox(height: 16),
-
-            // Infos médicales
-         /*   Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-              child: Padding(
-                padding: const EdgeInsets.all(14),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text("Informations médicales",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-                    const SizedBox(height: 12),
-                    _infoRow("Antécédents", patient.antecedentsMedicaux ?? "Aucun", icon: Icons.history),
-                    _infoRow("Allergies", patient.allergies ?? "Aucune", icon: Icons.warning),
-                    _infoRow("Traitements en cours", patient.traitementsEnCours ?? "Aucun", icon: Icons.healing),
-                  ],
-                ),
-              ),
-            ),*/
           ],
         ),
       ),
