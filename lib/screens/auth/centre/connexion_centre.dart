@@ -9,7 +9,6 @@
     @override
     State<ConnexionCentrePage> createState() => _ConnexionCentrePageState();
   }
-
   class _ConnexionCentrePageState extends State<ConnexionCentrePage> {
     final _formKey = GlobalKey<FormState>();
     final _emailController = TextEditingController();
@@ -88,7 +87,7 @@
                         const SizedBox(height: 20),
 
                         _loading
-                            ? const CircularProgressIndicator()
+                            ? const CircularProgressIndicator(color: Colors.blue,)
                             : SizedBox(
                           width: double.infinity,
                           height: 50,

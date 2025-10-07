@@ -146,7 +146,7 @@ class _AjoutMedecinState extends State<AjoutMedecin> {
                     ? const CircularProgressIndicator()
                     : ElevatedButton(
                   onPressed: _submit,
-                  child: const Text('Ajouter le Médecin'),
+                  child: const Text('Ajouter le Médecin',style: TextStyle(color: Colors.blue),),
                 ),
               ],
             ),

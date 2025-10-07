@@ -144,6 +144,7 @@ class _AuthAdminPageState extends State<AuthAdminPage> {
     return TextFormField(
       controller: controller,
       obscureText: obscure,
+      cursorColor: Colors.black,
       decoration: InputDecoration(
         labelText: label,
         labelStyle: const TextStyle(color: Colors.black),
