@@ -118,6 +118,7 @@ class _AjoutMedecinState extends State<AjoutMedecin> {
                 ),
                 SizedBox(height: 15,),
                 TextFormField(
+                  cursorColor: Colors.blue,
                   controller: _emailController,
                   decoration: const InputDecoration(labelText: 'Email',
                     border: OutlineInputBorder(),
@@ -131,6 +132,7 @@ class _AjoutMedecinState extends State<AjoutMedecin> {
                 ),
                 SizedBox(height: 15,),
                 TextFormField(
+                  cursorColor: Colors.blue,
                   controller: _telephoneController,
                   decoration: const InputDecoration(labelText: 'Téléphone',
                     border: OutlineInputBorder(),

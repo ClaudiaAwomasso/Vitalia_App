@@ -171,7 +171,7 @@ class _NouveauDossierPatientPageState extends State<NouveauDossierPatientPage> {
                 children: [
                   Expanded(
                     child: TextFormField(
-                      cursorColor: Colors.black,
+                      cursorColor: Colors.blue,
                       controller: nomController,
                       decoration: const InputDecoration(labelText: "Nom", border: OutlineInputBorder(),
                         labelStyle: TextStyle(color: Colors.black),
@@ -184,7 +184,7 @@ class _NouveauDossierPatientPageState extends State<NouveauDossierPatientPage> {
                   const SizedBox(width: 10),
                   Expanded(
                     child: TextFormField(
-                      cursorColor: Colors.black,
+                      cursorColor: Colors.blue,
                       controller: prenomController,
                       decoration: const InputDecoration(labelText: "Prénom",
                         labelStyle: TextStyle(color: Colors.black),
